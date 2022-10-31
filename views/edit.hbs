@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>DeskUp - It's Worth It</title>
+        <link rel="icon" href="/images/boxLogo.png">
+        <link rel="stylesheet" href="/index.css">
+        <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-md fixed-top animated">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            
+            {{!-- <div class="center"> --}}
+            <a class="navbar-brand logo" href="/">
+                <img src="/images/logo5.png" class="NavLogo">
+            </a>
+            {{!-- </div> --}}
+        </nav>
+
+        <div class="content" id="marginclass">
+            <div class="container">
+                <a class ="btn-link" href="manage-reviews" id="backbutton">< Back</a>
+                    <form method="Post" action="update">
+                    <input type="hidden" class="form-control" name="id" id="id" value="{{review._id}}">
+                    <input type="hidden" class="form-control" name="category" id="category" value="{{review.category}}">
+                    <input type="hidden" class="form-control" name="author" id="author" value="{{review.author}}">
+                    <input type="hidden" class="form-control" name="oldtitle" id="oldtitle" value="{{review.title}}">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Primary Image: (Required Format: <b>https://drive.google.com/uc?id=</b><i>link-id</i>)</label>
+                        <input type="text"  class="form-control" name="primaryImage" id="primaryImage" value="{{review.primaryImage}}"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Title:</label>
+                        <input type="text" class="form-control" name="title" id="title" value="{{review.title}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Content:</label>
+                        <textarea class="form-control" name="content" id="content" style="height: 450px;">{{review.content}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Secondary image: (Required Format: <b>https://drive.google.com/uc?id=</b><i>link-id</i>)</label>
+                        <input type="text" class="form-control" name="secondaryImage" id="secondaryImage" value="{{review.secondaryImage}}">
+                    </div>
+                    <div class="form-group">
+                        <div class="table-responsive">  
+                            <label for="message-text" class="col-form-label">Specifications: </label>
+                            <input type="hidden" class="form-control" name="counter" id="specscount" value={{review.specs.length}}>
+                            <table class="table table-bordered" id="dynamic_field">  
+                                {{#each review.specs}}
+                                    {{#ifEquals @index "0"}}
+                                        <tr>  
+                                            <td><input type="text" name="name[{{@index}}]" placeholder="No Specification yet..." class="form-control name_list" value="{{this}}"/></td>  
+                                            <td><button type="button" id="add" class="btn btn-success">Add More</button></td>                              
+                                        </tr>
+                                    {{else}}
+                                    <tr id="row{{@index}}">
+                                        <td><input type="text" name="name[{{@index}}]" placeholder="No Specification yet..." class="form-control name_list" value="{{this}}"/></td>
+                                        <td><button type="button" name="remove" id="{{@index}}" class="btn btn-danger btn_remove">X</button></td></tr>  
+                                    </tr>
+                                    {{/ifEquals}}
+                                {{/each}} 
+                            </table>  
+                        </div>  
+                    </div>                                        
+                    <div class="form-group row">
+                        <div class=col-sm-6>
+                            <label for="message-text" class="col-form-label">The Good:</label>
+                            <textarea class="form-control" name="pros" id="pros" style="height: 350px;">{{review.pros}}</textarea>
+                        </div>
+                        <div class=col-sm-6>
+                            <label for="message-text" class="col-form-label">Not so Good:</label>
+                            <textarea class="form-control" name="cons" id="cons" style="height: 350px;">{{review.cons}}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="col-form-label">Verdict:</label>
+                        <textarea class="form-control" name="verdict" id="verdict" style="height: 350px;">{{review.verdict}}</textarea>
+                    </div>
+                    <div class="form-group row">
+                        <div class=col-sm-6>
+                            <label for="message-text" class="col-form-label">Score:</label>
+                            <input type="number" min="0" step="0.1" name="score" class="form-control" id="score" value="{{review.score}}">
+                        </div>
+                    </div> 
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-info">Edit the Review</button>
+                    </div> 
+                </form>
+            </div> 
+        </div>
+        <div class="mt-5 pt-4 pb-3 footer ">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-xs-12 about-company">
+                        <h2>About Us</h2>
+                        <p class="pr-5 text-white-50">DeskUp is a product review website. It shares insight, inspiration and ideas about desk setups. 
+                            Contains detailed guides and reviews of different products found on a desk setup</p>
+                    <p>NPM Packages: Express, HBS, Express-Session, Body-parser, Mongoose, Bootsrap, Crypto, and Moment</p>
+                    </div>
+                    <div class="col-lg-2 col-xs-12 links">
+                        {{!-- <h4 class="mt-lg-0 mt-sm-3">More</h4>
+                        <ul class="m-0 p-0">
+                            <li>- <a href="#">Community</a></li>
+                            <li>- <a href="#">Contributors</a></li>
+                            <li>- <a href="#">Developers</a></li>
+                        </ul> --}}
+                    </div>
+                    <div class="col-lg-4 col-xs-12 location">
+                        <h4 class="mt-lg-0 mt-sm-4">Contact Us</h4>
+                        <p>22, Lorem ipsum dolor, consectetur adipiscing</p>
+                        <p class="mb-0"><i class="fa fa-phone mr-3"></i>(541) 754-3010</p>
+                        <p><i class="fa fa-envelope mr-3"></i>DeskUp@dkup.com</p>
+                    </div>
+                </div>
+                <div class="row mt-2 border-top">
+                    <div class="col copyright">
+                    <p class=""><small class="text-white-50">© 2020. All Rights Reserved.</small></p>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </body>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){  
+                var i = {{review.specs.length}};  
+            $('#counter').html(1);
+
+            $('#add').click(function(){   
+                $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="name['+i+']" placeholder="No Specification yet..." class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
+                i++; 
+                console.log(i);
+                $('#specscount').val(i)
+            });  
+
+            $(document).on('click', '.btn_remove', function(){  
+                var button_id = $(this).attr("id");   
+                $('#row'+button_id+'').remove(); 
+                i--;
+                console.log(i); 
+                $('#specscount').val(i);
+            }); 
+
+        });    
+    </script>
+</html>

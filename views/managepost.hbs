@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>DeskUp - It's Worth it</title>
+        <link rel="icon" href="/images/boxLogo.png">
+        <link rel="stylesheet" href="/index.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/bootstrap.min.css" />
+        <script language="JavaScript" type="text/javascript" src="/js/jquery.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    </head>
+    <body>
+    <div class="mainContainer">
+        <nav class="navbar navbar-expand-md fixed-top animated">
+            <a class="navbar-brand logo" href="/">
+                <img src="/images/logo5.png" class="NavLogo">
+            </a>
+            <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/review">Reviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/category">Categories</a>
+                    </li>
+                </ul>
+
+                <form action="/review/searchResult" method="get">
+                    <input type="search" id="search" name="search" class="search-data" placeholder="Search" required>
+                    <button type="submit" class="fas fa-search"></button>
+                </form>
+
+                {{#ifEquals user.role "admin"}}
+                    <div class="btn-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownbg">
+                            <i class="fas fa-user"></i>Admin
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="/user/user-profile" id="dropdowntext">User Profile</a>
+                            <a class="dropdown-item" href="/user/manage-users" id="dropdowntext">Manage Users</a>
+                            <a class="dropdown-item" href="manage-reviews" id="dropdowntext">Manage Review</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/signout" id="dropdowntext">Logout</a>
+                        </div>
+                    </div>
+                {{else}} {{#ifEquals user.role "user"}}
+                    <div class="btn-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownbg">
+                            <i class="fas fa-user"></i>{{user.username}}
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="/user/user-profile" id="dropdowntext">User Profile</a>
+                            <a class="dropdown-item" href="manage-reviews" id="dropdowntext">Manage Review</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/signout" id="dropdowntext">Logout</a>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="btn-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownbg">
+                            <i class="fas fa-user"></i>Account
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="user/login" id="dropdowntext">Login</a>
+                            <a class="dropdown-item" href="user/register" id="dropdowntext">Register</a>
+                        </div>
+                    </div>
+                {{/ifEquals}} {{/ifEquals}}
+        </nav>
+
+        <div class="content" id="marginclass">
+            <div class="container featuredCont">
+                <div class="row headerRowFeatured">
+                    <div class="col-md-12" id="col-md-Feartured">
+                        <h1 class="featuredText">Manage Reviews</h1>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                        <button type="button" class="btn mb-3 float-right" data-toggle="modal" data-target="#addpost" id="addButton">Add a Review</button>
+                        {{#ifEquals user.role "admin"}}
+                            <button type="button" class="btn mb-3 float-right" data-toggle="modal" data-target="#addCategory" id="categButton">Add a Category</button>
+                        {{/ifEquals}}
+                </div>
+                
+                <div class="modal fade" id="addpost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Add a Review</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            
+                                <div class="modal-body">
+                                    <form method="Post" action="add-review">
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">Primary Image: (Required Format: <b>https://drive.google.com/uc?id=</b><i>link-id</i>)</label>
+                                            <input type="text"  class="form-control" name="primaryImage" id="primaryImage">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">Title:</label>
+                                            <input type="text" class="form-control" name="title" id="title">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">Content:</label>
+                                            <textarea class="form-control" name="content" id="content" style="height: 400px;"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">Secondary image: (Required Format: <b>https://drive.google.com/uc?id=</b><i>link-id</i>)</label>
+                                            <input type="text" class="form-control" name="secondaryImage" id="secondaryImage">
+                                        </div>
+                                        <div class="form-group">
+                                                <div class="table-responsive">  
+                                                    <label for="message-text" class="col-form-label">Specifications: </label>
+                                                    <input type="hidden" class="form-control" name="counter" id="specscount" value="counter">
+                                                    <table class="table table-bordered" id="dynamic_field">  
+                                                        <tr>  
+                                                            <td><input type="text" name="name[0]" placeholder="No Specification yet..." class="form-control name_list"/></td>  
+                                                            <td><button type="button" id="add" class="btn btn-success">Add More</button></td>  
+                                                        </tr>  
+                                                    </table>  
+                                                </div>  
+                                        </div>                                        
+                                        <div class="form-group row">
+                                            <div class=col-sm-6>
+                                                <label for="message-text" class="col-form-label">The Good:</label>
+                                                <textarea class="form-control" name="pros" id="pros" style="height: 300px;"></textarea>
+                                            </div>
+                                            <div class=col-sm-6>
+                                                <label for="message-text" class="col-form-label">Not so Good:</label>
+                                                <textarea class="form-control" name="cons" id="cons" style="height: 300px;"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message" class="col-form-label">Verdict:</label>
+                                            <textarea class="form-control" name="verdict" id="verdict" style="height: 350px;"></textarea>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class=col-sm-6>
+                                                <label for="message-text" class="col-form-label">Score:</label>
+                                                <input type="number" min="0" max="10" step="0.1" name="score" class="form-control" id="score">
+                                            </div>
+                                            <div class=col-sm-6>
+                                                <label for="message-text" class="col-form-label"> Category: </label>
+                                                
+                                                <select class="form-control"  name="category" id="category">
+                                                    <option selected>Choose a category</option>
+                                                    {{#each categories}}
+                                                    <option>{{name}}</option>
+                                                    {{!-- <option>Mice</option>
+                                                    <option>Keyboard</option>
+                                                    <option>Audio</option>
+                                                    <option>Microphone</option>
+                                                    <option>Computer</option> --}}
+                                                    {{/each}} 
+                                                </select>  
+                                            </div>
+                                        </div>  
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-info">Add Review</button>
+                                        </div> 
+                                    </form>                             
+                                </div>
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="addCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            
+                                <div class="modal-body">
+                                    <form method="Post" action="/Category/add-category">
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">Name:</label>
+                                            <input type="text"  class="form-control" name="name" id="name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">Description:</label>
+                                            <textarea class="form-control" name="desc" id="desc" style="height: 150px;"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">Picture:</label>
+                                            <input type="text" class="form-control" name="picture" id="picture">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">icon:</label>
+                                            <input type="text" class="form-control" name="icon" id="icon">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-info">Add Category</button>
+                                        </div> 
+                                    </form>                             
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{#each reviews}}
+                <div data-id="{{_id}}">
+                <div class="row pt-3 mng-post-row">
+                    <div class="col-md-12 border-bottom">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <p class="postTitle">{{title}}</p>
+                                <p class="articleDetails">by {{author}}. {{date}}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" id="deleteButton" title ="{{title}}" category ="{{category}}" author-id="{{author}}" data-id="{{_id}}" class="btn btn btn-outline-danger btn-sm float-right ml-2">Delete Review</button>
+                                <button type="button" id="editButton" title ="{{title}}" data-id="{{_id}}" class="btn btn-outline-dark btn-sm float-right">Edit Review</button>
+                            </div> 
+                        </div>
+                        <p class="postPreview">{{content}}
+                        </p>
+                        
+                    </div>
+                </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <form id="edit_form" method="post" action="edit">
+            <input type="hidden" name="id" id="edit_id">
+            <input type="hidden" name="title" id="edit_title">
+        </form>
+        <div class="modal" tabindex="-1" role="dialog" id="deleted">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" >
+                <div class="modal-header" style="background-color: indianred;">
+                    <h5 class="modal-title" style="color:white">Delete</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Review Deleted
+                </div>  
+                </div>
+            </div>
+        </div>
+</div>
+        <div class="pt-4 pb-3 footer stickyFooter">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-xs-12 about-company">
+                        <h2>About Us</h2>
+                        <p class="pr-5 text-white-50">DeskUp is a product review website. It shares insight, inspiration and ideas about desk setups. 
+                            Contains detailed guides and reviews of different products found on a desk setup</p>
+                    <p>NPM Packages: Express, HBS, Express-Session, Body-parser, Mongoose, Bootsrap, Crypto, and Moment</p>
+                    </div>
+                    <div class="col-lg-2 col-xs-12 links">
+                        {{!-- <h4 class="mt-lg-0 mt-sm-3">More</h4>
+                        <ul class="m-0 p-0">
+                            <li>- <a href="#">Community</a></li>
+                            <li>- <a href="#">Contributors</a></li>
+                            <li>- <a href="#">Developers</a></li>
+                        </ul> --}}
+                    </div>
+                    <div class="col-lg-4 col-xs-12 location">
+                        <h4 class="mt-lg-0 mt-sm-4">Contact Us</h4>
+                        <p>22, Lorem ipsum dolor, consectetur adipiscing</p>
+                        <p class="mb-0"><i class="fa fa-phone mr-3"></i>(541) 754-3010</p>
+                        <p><i class="fa fa-envelope mr-3"></i>DeskUp@dkup.com</p>
+                    </div>
+                </div>
+                <div class="row mt-2 border-top">
+                    <div class="col copyright">
+                    <p class=""><small class="text-white-50">© 2020. All Rights Reserved.</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){  
+                var i = 1;  
+            $('#counter').html(1);
+
+            $('#add').click(function(){   
+                $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="name['+i+']" placeholder="No Specification yet..." class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
+                i++; 
+                console.log(i);
+                $('#counter').html(i);
+                $('#specscount').val(i)
+            });  
+
+            $(document).on('click', '.btn_remove', function(){  
+                var button_id = $(this).attr("id");   
+                $('#row'+button_id+'').remove(); 
+                i--;
+                console.log(i); 
+                $('#specscount').val(i);
+            }); 
+
+        });   
+        $(document).ready(function(){
+            $("button#deleteButton").click(function(){
+                let id=$(this).attr("data-id")
+                let title=$(this).attr("title")
+                let author=$(this).attr("author-id")
+                let category=$(this).attr("category")
+                $.ajax({
+                    url: "delete-post",
+                    method: "post",
+                    data: {
+                        id: id,
+                        title: title,
+                        author: author,
+                        category: category
+                    },
+                    success : function(c){
+                        console.log("Delete was: " + c)
+                        if(c){
+                            $('#deleted').modal('show')
+                            $("div[data-id="+id+"]").remove()
+                        }
+                    }
+                })
+            })
+        })
+
+        $(document).ready(function(){
+                $("button#editButton").click(function(){
+                    let id=$(this).attr("data-id")
+                    let title=$(this).attr("title")
+                    $("input#edit_id").val(id)
+                    $("input#edit_title").val(title)
+                    $("form#edit_form").submit()
+                })
+        })
+    </script>
+</html>

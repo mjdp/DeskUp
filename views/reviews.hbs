@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"> 
+    <head>
+        <meta charset="utf-8">
+        <title>DeskUp - It's Worth it</title>
+        <link rel="icon" href="/images/boxLogo.png">
+        <link rel="stylesheet" href="/index.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    </head>
+    <body>
+    <div class="mainContainer">
+        <nav class="navbar navbar-expand-md fixed-top animated ">
+            <a class="navbar-brand logo" href="/">
+                <img src="/images/logo5.png" class="NavLogo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="review">Reviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="category">Categories</a>
+                    </li>
+                </ul>
+                
+                <form action="review/searchResult" method="get">
+                    <input type="search" id="search" name="search" class="search-data" placeholder="Search" required>
+                    <button type="submit" class="fas fa-search"></button>
+                </form>
+
+                {{#ifEquals user.role "admin"}}
+                    <div class="btn-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownbg">
+                            <i class="fas fa-user"></i>Admin
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="user/user-profile" id="dropdowntext">User Profile</a>
+                            <a class="dropdown-item" href="user/manage-users" id="dropdowntext">Manage Users</a>
+                            <a class="dropdown-item" href="review/manage-reviews" id="dropdowntext">Manage Review</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="signout" id="dropdowntext">Logout</a>
+                        </div>
+                    </div>
+                {{else}} {{#ifEquals user.role "user"}}
+                    <div class="btn-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownbg">
+                            <i class="fas fa-user"></i>{{user.username}}
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="user/user-profile" id="dropdowntext">User Profile</a>
+                            <a class="dropdown-item" href="review/manage-reviews" id="dropdowntext">Manage Review</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="signout" id="dropdowntext">Logout</a>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="btn-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownbg">
+                            <i class="fas fa-user"></i>Account
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="user/login" id="dropdowntext">Login</a>
+                            <a class="dropdown-item" href="user/register" id="dropdowntext">Register</a>
+                        </div>
+                    </div>
+                {{/ifEquals}} {{/ifEquals}}
+            </div>
+        </nav>
+
+        <div class="content" id="marginclass">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb" id="breadcrumbBG">
+                        <li class="breadcrumb-item"><a href="/" id="breadcrumbItemColor">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Reviews</li>
+                    </ol>
+                </nav>
+
+                <div class="row mb-5 headerRowFeatured">
+                    <div class="col-md-5">
+                        <h1 class="featuredText">Reviews</h1>
+                    </div>
+
+                    <div class="col-md-7 pb-5">
+
+                        <span class="featuredAbout">If you're looking for product reviews for you next upgrade, 
+                        we got you covered. View the product reviews our very own contributors
+                        have in store for you. 
+                        </span>
+                    </div>
+                </div>
+                {{#each review}}
+                <div data-id="{{_id}}">
+                <div class="row mt-4 contentRowReviews">
+                    <div class="col-md-6 col-md-6-Padding">
+                        <img src="{{primaryImage}}" class="img-responsive reviewIMG">
+                    </div>
+
+                    <div class="col-md-6 col-md-6-Padding">
+
+                        <div class="row">
+                            <div class="col">
+                                <span id="articleScore">DeskUP SCORE</span>
+                            </div>
+                            <div class="col">
+                                <div class="progress" id="score" style="height: 20px;">
+                                    <div class="progress-bar" role="progressbar" style="width: {{times score}}%" aria-valuenow="25" aria-valuemin="50" aria-valuemax="100" id="scoreValue">{{score}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p class="articleTitle">{{title}}</p>
+                        <p class="articleDetails">by {{author}}. {{date}}</p>
+                        <div class="articlePreview">{{content}}
+                        
+                        </div>
+                        <p class="readmore" title="{{title}}" data-id="{{_id}}" id="readmore">Read more</p>
+                        {{!-- <a class="readmore" id="readmore" href="review/ReviewPost">Read more</a> --}}
+                    </div>
+                </div>
+                </div>
+                {{/each}}
+                <form id="rev_form" method="post" action="">
+                    <input type="hidden" name="revid" id="revid">
+                </form>
+                {{!-- <div class="row mt-4 contentRowReviews">
+                    <div class="col-md-6 col-md-6-Padding">
+                        <img src="/images/keyboard.jpg" class="img-responsive reviewIMG">
+                    </div>
+
+                    <div class="col-md-6 col-md-6-Padding">
+                        <div class="row">
+                            <div class="col">
+                                <span id="articleScore">DeskUP SCORE</span>
+                            </div>
+                            <div class="col">
+                                <div class="progress" id="score" style="height: 20px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 88%" aria-valuenow="25" aria-valuemin="50" aria-valuemax="100" id="scoreValue">8.8</div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="articleTitle">Keychron K2 Wireless Mechanial keyboard</p>
+                        <p class="articleDetails">by Patrick Lawrence. August 31, 2020</p>
+                        <p class="articlePreview">K2 is a super tactile wireless or wired keyboard giving you all the keys and function you need while keeping it compact, 
+                            with the largest battery seen in a mechanical keyboard.... <a id="readmore" href="review/ReviewPost">Read more</a>
+                        </p>
+                    </div>
+                </div> --}}
+            </div>
+        </div>
+    </div>
+        <div class="mt-5 pt-4 pb-3 footer stickyFooter">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-xs-12 about-company">
+                        <h2>About Us</h2>
+                        <p class="pr-5 text-white-50">DeskUp is a product review website. It shares insight, inspiration and ideas about desk setups. 
+                            Contains detailed guides and reviews of different products found on a desk setup</p>
+                    <p>NPM Packages: Express, HBS, Express-Session, Body-parser, Mongoose, Bootsrap, Crypto, and Moment</p>
+                    </div>
+                    <div class="col-lg-2 col-xs-12 links">
+                        {{!-- <h4 class="mt-lg-0 mt-sm-3">More</h4>
+                        <ul class="m-0 p-0">
+                            <li>- <a href="#">Community</a></li>
+                            <li>- <a href="#">Contributors</a></li>
+                            <li>- <a href="#">Developers</a></li>
+                        </ul> --}}
+                    </div>
+                    <div class="col-lg-4 col-xs-12 location">
+                        <h4 class="mt-lg-0 mt-sm-4">Contact Us</h4>
+                        <p>22, Lorem ipsum dolor, consectetur adipiscing</p>
+                        <p class="mb-0"><i class="fa fa-phone mr-3"></i>(541) 754-3010</p>
+                        <p><i class="fa fa-envelope mr-3"></i>DeskUp@dkup.com</p>
+                    </div>
+                </div>
+                <div class="row mt-2 border-top">
+                    <div class="col copyright">
+                    <p class=""><small class="text-white-50">© 2020. All Rights Reserved.</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+                $(".readmore").click(function(){
+                    let id=$(this).attr("data-id")
+                    let title=$(this).attr("title")
+                    $("input#revid").val(title)
+                    $("form#rev_form").attr("action", "review/ReviewPost/" + title)
+                    $("form#rev_form").submit()
+                })
+            })
+    </script>
+</html>

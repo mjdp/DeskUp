@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>DeskUp - Article Title</title>
+        <link rel="icon" href="/images/boxLogo.png">
+        <link rel="stylesheet" href="/index.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    </head>
+    <body>
+    <div class="mainContainer">
+        <nav class="navbar navbar-expand-md fixed-top animated ">
+            <a class="navbar-brand logo" href="/">
+                <img src="/images/logo5.png" class="NavLogo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/review">Reviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/category">Categories</a>
+                    </li>
+                </ul>
+
+                <form action="../searchResult" method="get">
+                    <input type="search" id="search" name="search" class="search-data" placeholder="Search" required>
+                    <button type="submit" class="fas fa-search"></button>
+                </form>
+
+                {{#ifEquals user.role "admin"}}
+                    <div class="btn-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownbg">
+                            <i class="fas fa-user"></i>Admin
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="/user/user-profile" id="dropdowntext">User Profile</a>
+                            <a class="dropdown-item" href="/user/manage-users" id="dropdowntext">Manage Users</a>
+                            <a class="dropdown-item" href="/review/manage-reviews" id="dropdowntext">Manage Review</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/signout" id="dropdowntext">Logout</a>
+                        </div>
+                    </div>
+                {{else}} {{#ifEquals user.role "user"}}
+                    <div class="btn-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownbg">
+                            <i class="fas fa-user"></i>{{user.username}}
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="/user/user-profile" id="dropdowntext">User Profile</a>
+                            <a class="dropdown-item" href="/review/manage-reviews" id="dropdowntext">Manage Review</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/signout" id="dropdowntext">Logout</a>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="btn-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownbg">
+                            <i class="fas fa-user"></i>Account
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="/user/login" id="dropdowntext">Login</a>
+                            <a class="dropdown-item" href="/user/register" id="dropdowntext">Register</a>
+                        </div>
+                    </div>
+                {{/ifEquals}} {{/ifEquals}}
+            </div>
+        </nav>
+
+        <div class="content" id="marginclass">
+            <div class="container">
+                {{#with review}}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                <nav aria-label="breadcrumb" >
+                    <ol class="breadcrumb" id="breadcrumbBG">
+                        <li class="breadcrumb-item"><a href="/" id="breadcrumbItemColor">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/review" id="breadcrumbItemColor">Reviews</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+                    </ol>
+                </nav>
+                <div class="row" >
+                    <div class="col-12 m-auto">
+                        <img src="{{primaryImage}}" class="img-responsive reviewPostIMG">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-8 m-auto">
+                        <p class="articleTitle">{{title}}</p>
+                        <p class="articleDetails">by {{author}}. {{date}}</p>
+                    </div>
+
+                    <div class="col-4 mt-2">
+                        <div class="row">
+                            <div class="col">
+                                <span id="articleScore">DeskUP SCORE</span>
+                            </div>
+                            <div class="col">
+                                <div class="progress" id="score" style="height: 20px;">
+                                    <div class="progress-bar" role="progressbar" style="width: {{times score}}%" aria-valuenow="25" aria-valuemin="50" aria-valuemax="100" id="scoreValue">{{score}} </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12 m-auto">
+                        <div class="reviewText">{{content}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-6">
+                        <p class="specificationsHeading">Specifications</p>
+                        <ul class="speclist">
+                            {{#each specs}}
+                            <li class="specs reviewText">{{this}}</li>              
+                            {{/each}}
+                        </ul>
+                    </div>
+
+                    <div class="col-6 border-left reviewborderleft">
+                        <img src="{{secondaryImage}}" class="img-responsive reviewPostIMG2">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 m-auto border-bottom">
+                        <p class="ArticleHeadings">The Good</p>
+                            <div class="reviewText">{{pros}}
+                            </div>                            
+                    </div>
+                    <div class="col-6 m-auto border-bottom">
+                        <p class="ArticleHeadings">Not so Good</p>
+                            <div class="reviewText">{{cons}}
+                            </div>                   
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 m-auto border-bottom">
+                        <p class="ArticleHeadings">Verdict</p>
+                        <div class="reviewText">{{verdict}}
+                        </div>
+                    </div>
+                </div>
+            {{/with}}
+            </div>
+                <div class="container mb-5" id="parentContainer">
+                    {{#if user.username}} 
+                        <p class="comments">Comments</p>
+                        {{!-- <form action="../comment" method="POST"> --}}
+                            {{#with review}}
+                                    <input type="hidden" value="{{_id}}" name="postID" id="postID">
+                                    <input type="hidden" value="{{title}}" name="postTitle" id="postTitle">
+                            {{/with}}
+                            <div class="d-flex flex-row">
+                                {{!-- <div class="p-2"><i class="fas fa-comment-alt fa-3x"></i></div> --}}
+                                <input class="commentNow"  type="tex" id="comment" name="comment" placeholder="Write a comment..."></input>
+                            </div> 
+                            <div class="row d-flex justify-content-end">
+                                <button type="submit" ob-id="{{user.id}}" name="{{user.username}}" class="commentLoginbutton">Comments</button>
+                            </div>  
+                        {{!-- </form>                                           --}}
+                    {{else}}
+                        <p class="comments">Comments</p>
+                        <div class="d-flex flex-row">
+                            {{!-- <div class="p-2"><i class="fas fa-comment-alt fa-3x"></i></div> --}}
+                            <div class="commentNow">Login or Sign Up to leave a comment</div>
+                        </div> 
+                        <div class="row d-flex justify-content-end">
+                            <div class="commentLoginbutton"><a href="/user/login" style="color: white; text-decoration: none">Login</a></div>
+                            <div class="commentLoginbutton"><a href="/user/register" style="color: white; text-decoration: none">Sign Up</a></div>
+                        </div>
+                    {{/if}} 
+
+                    {{#ifEquals user.role "admin"}}
+                        {{#each review.comments}}
+                        <div data-id={{_id}}>
+                            <div class="d-flex flex-row comment-row m-t-0 border-bottom">
+                                <div class="comment-text w-100">
+                                    <span class="commentusername">{{username}}</span> 
+                                    <p class="text-muted float-right">{{date}}</p>  
+                                    <span class="m-b-15 d-block commmentfield">{{comment}}</span>
+                                    {{#ifEquals ../user.username username}}                             
+                                        <button type="button" id="deleteButton" title-id="{{../review.title}}" username="{{username}}" data-id={{_id}} comment="{{comment}}" class="btn btn btn-outline-danger btn-sm float-right ml-2 deleteButton">Delete</button>
+                                        <button type="button" id="editButton" title-id="{{../review.title}}" username="{{username}}" data-id={{_id}} comment="{{comment}}" class="btn btn-outline-dark btn-sm float-right ml-2"> Edit</button> 
+                                    {{else}}
+                                        <button type="button" id="deleteButton" title-id="{{../review.title}}" username="{{username}}" data-id={{_id}} comment="{{comment}}" class="btn btn btn-outline-danger btn-sm float-right ml-2 deleteButton">Delete</button>
+                                    {{/ifEquals}}                                        
+                                </div>
+                            </div> 
+                        </div>
+                        {{/each}}
+                    {{else}} {{#ifEquals user.role "user"}}
+                        {{#each review.comments}}
+                        <div data-id={{_id}}>
+                            <div class="d-flex flex-row comment-row m-t-0 border-bottom">
+                                <div class="comment-text w-100">
+                                    <h5 class="font-medium">{{username}}</h5> 
+                                    <span class="text-muted float-right">{{date}}</span>  
+                                    <span class="m-b-15 d-block commmentfield">{{comment}}</span>                                 
+                                    {{#ifEquals ../user.username username}}                             
+                                        <button type="button" id="deleteButton" title-id="{{../review.title}}" username="{{username}}" data-id={{_id}} comment="{{comment}}" class="btn btn btn-outline-danger btn-sm float-right ml-2 deleteButton">Delete</button>
+                                        <button type="button" id="editButton" title-id="{{../review.title}}" username="{{username}}" data-id={{_id}} comment="{{comment}}" class="btn btn-outline-dark btn-sm float-right ml-2"> Edit</button> 
+                                    {{/ifEquals}}
+                                </div> 
+                            </div>
+                        </div>
+                        {{/each}}
+                    {{else}}
+                        {{#each review.comments}}
+                        <div data-id={{_id}}>
+                            <div class="d-flex flex-row comment-row m-t-0 border-bottom">
+                                <div class="comment-text w-100">
+                                    <h5 class="font-medium">{{username}}</h5> <span class="text-muted float-right">{{date}}</span>  
+                                    <span class="m-b-15 d-block">{{comment}}</span>
+                                    <div class="comment-footer float-right">  
+                                    </div>           
+                                </div>
+                            </div>
+                        </div> 
+                        {{/each}}
+                    {{/ifEquals}} {{/ifEquals}}
+                </div>
+        </div> 
+    </div>          
+        <div class="mt-5 pt-4 pb-3 footer stickyFooter">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-xs-12 about-company">
+                        <h2>About Us</h2>
+                        <p class="pr-5 text-white-50">DeskUp is a product review website. It shares insight, inspiration and ideas about desk setups. 
+                            Contains detailed guides and reviews of different products found on a desk setup</p>
+                    <p>NPM Packages: Express, HBS, Express-Session, Body-parser, Mongoose, Bootsrap, Crypto, and Moment</p>
+                    </div>
+                    <div class="col-lg-2 col-xs-12 links">
+                        {{!-- <h4 class="mt-lg-0 mt-sm-3">More</h4>
+                        <ul class="m-0 p-0">
+                            <li>- <a href="#">Community</a></li>
+                            <li>- <a href="#">Contributors</a></li>
+                            <li>- <a href="#">Developers</a></li>
+                        </ul> --}}
+                    </div>
+                    <div class="col-lg-4 col-xs-12 location">
+                        <h4 class="mt-lg-0 mt-sm-4">Contact Us</h4>
+                        <p>22, Lorem ipsum dolor, consectetur adipiscing</p>
+                        <p class="mb-0"><i class="fa fa-phone mr-3"></i>(541) 754-3010</p>
+                        <p><i class="fa fa-envelope mr-3"></i>DeskUp@dkup.com</p>
+                    </div>
+                </div>
+                <div class="row mt-2 border-top">
+                    <div class="col copyright">
+                    <p class=""><small class="text-white-50">© 2020. All Rights Reserved.</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script>
+
+        // add comment  
+        $(document).ready(function(){
+            $("button.commentLoginbutton").click(function(){
+                let name = $(this).attr('name')
+                let obid =$(this).attr('ob-id')
+                let comment = $(".commentNow").val()
+                let title = $("#postTitle").val()
+                let id = $("#postID").val()
+
+                $('input.commentNow').val("")
+                $.ajax({
+                    url: "../comment",
+                    method: "post",
+                    data: {
+                        id: id,
+                        name: name,
+                        obid: obid,
+                        comment: comment,
+                        title: title
+                    },
+                    success : function(c){
+                        console.log("comment was: " + c)
+                        if(c){
+                            let parent = document.getElementById("parentContainer")
+                            let divID = document.createElement("div")
+                            let commentdiv = document.createElement("div")
+                            let commentText = document.createElement("div")
+                            let h5 = document.createElement("span")
+                            let span1 = document.createElement("p")
+                            let span2 = document.createElement("span")
+                            let commentfooter = document.createElement("div")  
+                            let date = c.date
+
+                            let deleteButton = document.createElement("button")
+                            let editButton = document.createElement("button")
+                            let divider = document.createElement("div")
+
+                            divID.setAttribute('data-id', c.newID)
+
+                            divider.className = "divider"
+                            
+                            
+                            deleteButton.setAttribute('type','button')
+                            $(deleteButton).attr("id", "deleteButton")
+                            deleteButton.setAttribute('title-id', title)
+                            deleteButton.setAttribute('username',name)
+                            deleteButton.setAttribute('ob-id', obid)
+                            deleteButton.setAttribute('data-id',c.newID)
+                            deleteButton.setAttribute('comment',comment)
+                            deleteButton.className = "btn btn btn-outline-danger btn-sm float-right ml-2 deleteButton";
+
+                            editButton.className = "btn btn-outline-dark btn-sm float-right ml-2"
+                            editButton.setAttribute("type", "button")
+                            $(editButton).attr("id", "editButton")
+                            editButton.setAttribute('title-id', title)
+                            editButton.setAttribute('username',name)
+                            editButton.setAttribute('ob-id', obid)
+                            editButton.setAttribute('data-id',c.newID)
+                            editButton.setAttribute('comment',comment)
+                            
+
+
+                            commentdiv.className = "d-flex flex-row comment-row m-t-0 border-bottom"
+                            commentText.className = "comment-text w-100"
+                            h5.className = "commentusername"
+                            span1.className = "text-muted float-right"
+                            span2.className = "m-b-15 d-block commmentfield"
+                            commentfooter.className = "comment-footer float-right"
+
+                            h5.innerHTML = name
+                            span1.innerHTML = c.date
+                            span2.innerHTML = comment
+                            editButton.innerHTML = "Edit"
+                            deleteButton.innerHTML = "Delete"
+                            
+                            
+
+                            commentText.appendChild(h5)
+                            commentText.appendChild(span1)
+                            commentText.appendChild(span2)
+                            commentText.appendChild(deleteButton)
+                            commentText.appendChild(editButton)
+
+                            commentdiv.appendChild(commentText)
+
+                            divID.appendChild(commentdiv)
+
+                            parent.append(divID)
+                            
+                        }
+                    }
+                })
+
+                
+            })
+            
+            
+        })
+
+        //delete button comments
+        $(document).ready(function(){
+            $(document).on('click', '#deleteButton', function() {
+                let id=$(this).attr("data-id")
+                let userid = $(this).attr("ob-id")
+                let username=$(this).attr("username")
+                let title=$(this).attr("title-id")
+                let comment=$(this).attr("comment")
+                $.ajax({
+                    url: "../delete-comment",
+                    method: "post",
+                    data: {
+                        id: id,
+                        userid: userid,
+                        username: username,
+                        title: title,
+                        comment: comment
+                    },
+                    success : function(c){
+                        console.log("Delete was: " + c)
+                        if(c){
+                            $("div[data-id="+id+"]").remove()
+                        }
+                    }
+                })
+            })
+        })
+
+        //edit button on comments
+        $(document).ready(function(){
+            $(document).on('click', '#editButton', function() {
+                let id=$(this).attr("data-id")
+                let userid = $(this).attr("ob-id")
+                let username=$(this).attr("username")
+                let title=$(this).attr("title-id")
+                let comment=$(this).attr("comment")
+                var parent = $(this).parent()
+
+                let saveButton = document.createElement("button")
+                saveButton.setAttribute('type','button')
+                saveButton.setAttribute('id','saveButton')
+                saveButton.setAttribute('title-id', title)
+                saveButton.setAttribute('ob-id', userid)
+                saveButton.setAttribute('username', username)
+                saveButton.setAttribute('data-id',id)
+                saveButton.setAttribute('comment',comment)
+                saveButton.className = "btn btn btn-outline-success btn-sm float-right ml-2";
+                saveButton.innerHTML = "Save"
+
+                let newComment = $(parent).children('.commmentfield');
+
+                $(newComment).attr('contenteditable', 'true') 
+                $(newComment).addClass('editableBG')
+                
+                parent.append(saveButton)
+            })
+        })
+
+        // save comment
+        $(document).ready(function(){
+            $(document).on('click', '#saveButton', function() {
+                let id= $(this).attr("data-id")
+                let username=$(this).attr("username")
+                let userid = $(this).attr("ob-id")
+                let title=$(this).attr("title-id")
+                let comment=$(this).attr("comment")
+                var parent = $(this).parent()
+
+                let commentfield = $(parent).children('.commmentfield');
+                let newComment = commentfield.text()
+                console.log(newComment)
+                
+                $.ajax({
+                    url: "../edit-comment",
+                    method: "post",
+                    data: {
+                        id: id,
+                        username: username,
+                        userid: userid,
+                        title: title,
+                        comment: comment,
+                        newComment: newComment
+                    },
+                    success : function(c){
+                        console.log("edit was: " + c)
+                        if(c){
+                            $(commentfield).attr('contenteditable', 'false') 
+                            $(commentfield).removeClass('editableBG')
+                            $("#saveButton").remove()
+                        }
+                    }
+                })
+                
+            })
+        })
+
+    </script>
+</html>

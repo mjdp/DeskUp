@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>DeskUp - It's Worth it</title>
+        <link rel="icon" href="/images/boxLogo.png">
+        <link rel="stylesheet" href="/index.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/bootstrap.min.css" />
+        <script language="JavaScript" type="text/javascript" src="/js/jquery.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    
+        <script language="JavaScript" type="text/javascript">
+                $(document).ready(function(){
+                    $('.carousel').carousel({
+                    interval: 3000
+                    })
+                });    
+        </script> 
+    </head>
+    <body>
+    <div class="mainContainer"> 
+    
+        <nav class="navbar navbar-expand-md fixed-top animated">
+            <a class="navbar-brand logo" href="/">
+                {{!-- <span>DeskUp</span> --}}
+                <img src="images/logo5.png" class="NavLogo">
+            </a>
+            <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="review">Reviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="category">Categories</a>
+                    </li>
+                </ul>
+
+                <form action="review/searchResult" method="get">
+                    <input type="search" id="search" name="search" class="search-data" placeholder="Search" required>
+                    <button type="submit" class="fas fa-search"></button>
+                </form>
+                {{#ifEquals user.role "admin"}}
+                    <div class="btn-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownbg">
+                            <i class="fas fa-user"></i>Admin
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="user/user-profile" id="dropdowntext">User Profile</a>
+                            <a class="dropdown-item" href="user/manage-users" id="dropdowntext">Manage Users</a>
+                            <a class="dropdown-item" href="review/manage-reviews" id="dropdowntext">Manage Review</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="signout" id="dropdowntext">Logout</a>
+                        </div>
+                    </div>
+                {{else}} {{#ifEquals user.role "user"}}
+                    <div class="btn-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownbg">
+                            <i class="fas fa-user"></i>{{user.username}}
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="user/user-profile" id="dropdowntext">User Profile</a>
+                            <a class="dropdown-item" href="review/manage-reviews" id="dropdowntext">Manage Review</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="signout" id="dropdowntext">Logout</a>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="btn-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownbg">
+                            <i class="fas fa-user"></i>Account
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="user/login" id="dropdowntext">Login</a>
+                            <a class="dropdown-item" href="user/register" id="dropdowntext">Register</a>
+                        </div>
+                    </div>
+                {{/ifEquals}} {{/ifEquals}}
+        </nav>
+
+        <main class = "main-container">
+            <section class="main-highlight">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        {{#each_rev review 1}}
+                        <div class="carousel-item active">
+                            <a id="readmore" title= "{{title}}"> <img class="d-block w-100" src="{{primaryImage}}" ></a>  
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5><a>{{title}}</a></h5>
+                                <h6>by {{author}}</h6>
+                                <p class="articlePreview">{{content}}
+                                </p>
+                            </div>
+                        </div>
+                        {{/each_rev}}
+                        {{#each_rev review 2}}
+                        <div class="carousel-item">
+                            <a id="readmore" title= "{{title}}"><img class="d-block w-100" src="{{primaryImage}}" ></a>
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5><a>{{title}}</a></h5>
+                                    <h6>by {{author}}</h6>
+                                    <p class="articlePreview">{{content}}
+                                    </p>
+                                </div>
+                        </div>
+                        {{/each_rev}}
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                    </div>
+            </section>
+            <section class="main-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <span class="title">Latest Reviews</span>
+                            <div class="line"></div>
+                            {{#each_rev review 3}}
+                            <div class="row">
+                                <div class="col-md-4 first" style="background-image: url({{primaryImage}}); background-size:cover;">
+                                </div>
+                                <div class="col-md-8 first">
+                                    <h3><a title = "{{title}}" id="readmore">{{title}}</a></h3>
+                                    <span>by {{author}}</span>
+                                    <p class="articlePreview">{{content}}</p>
+                                </div>
+                            </div>
+                            {{/each_rev}}
+                        </div>
+
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-4">
+                            <span class="title">Categories</span>
+                            <div class="line"></div>
+                            {{#each_cat categories 3}}
+                            <div data-id="{{_id}}">
+                            <div class="row">
+                                <a class="col-md-12 first categName" name-id="{{name}}" style="background-image: url({{picture}}); background-size: cover;">
+                                    <div class="text">
+                                        <span class="title">{{name}}</span><br>
+                                        {{!-- <span>{{contentT}}</span> --}}
+                                    </div>   
+                                </a>
+                            </div> 
+                            </div>
+                            {{/each_cat}}
+                            <form id="categ_form" method="post" action="category/specificCategory">
+                                <input type="hidden" name="nameC" id="nameC">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+        <form id="rev_form" method="post" action="">
+            <input type="hidden" name="revid" id="revid">
+        </form>
+        
+        <div class="mt-5 pt-4 pb-3 footer stickyFooter">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-xs-12 about-company">
+                        <h2>About Us</h2>
+                        <p class="pr-5 text-white-50">DeskUp is a product review website. It shares insight, inspiration and ideas about desk setups. 
+                            detailed guides and reviews of different products found on a desk setup</p>
+                    <p>NPM Packages: Express, HBS, Express-Session, Body-parser, Mongoose, Bootsrap, Crypto, and Moment</p>
+                    </div>
+                    <div class="col-lg-2 col-xs-12 links">
+                        {{!-- <h4 class="mt-lg-0 mt-sm-3">More</h4>
+                        <ul class="m-0 p-0">
+                            <li>- <a href="#">Community</a></li>
+                            <li>- <a href="#">Contributors</a></li>
+                            <li>- <a href="#">Developers</a></li>
+                        </ul> --}}
+                    </div>
+                    <div class="col-lg-4 col-xs-12 location">
+                        <h4 class="mt-lg-0 mt-sm-4">Contact Us</h4>
+                        <p>22, Lorem ipsum dolor, consectetur adipiscing</p>
+                        <p class="mb-0"><i class="fa fa-phone mr-3"></i>(541) 754-3010</p>
+                        <p><i class="fa fa-envelope mr-3"></i>DeskUp@dkup.com</p>
+                    </div>
+                </div>
+                <div class="row mt-2 border-top">
+                    <div class="col copyright">
+                    <p class=""><small class="text-white-50">© 2020. All Rights Reserved.</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+                $("a#readmore").click(function(){
+                    let title=$(this).attr("title")
+                    $("input#revid").val(title)
+                    $("form#rev_form").attr("action", "review/ReviewPost/" + title)
+                    $("form#rev_form").submit()
+                })
+        })
+        
+        $(document).ready(function(){
+                $(".categName").click(function(){
+                    let id=$(this).attr("name-id")
+                    $("input#nameC").val(id)
+                    console.log(id)
+                    console.log($("input#nameC").val())
+                    $("form#categ_form").submit()
+                })
+            })
+    </script>
+    
+</html>
